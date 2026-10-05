@@ -1,0 +1,337 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Semantic colours point at CSS variables so one set of utilities serves both themes. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-hi: var(--brand-hi);
+  --color-link: var(--link);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-ink: var(--accent-soft-ink);
+  --color-btn: var(--btn);
+  --color-btn-hi: var(--btn-hi);
+  --color-btn-fg: var(--btn-fg);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-k-seven: var(--k-seven);
+  --color-k-cvs: var(--k-cvs);
+  --color-k-walgreens: var(--k-walgreens);
+
+  /* Elevation differs per theme: soft tinted shadows in light, a hairline plus deep shadow in dark. */
+  --shadow-soft: var(--elev-soft);
+  --shadow-float: var(--elev-float);
+  --shadow-btn: var(--elev-btn);
+}
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --animate-page-in: page-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.2s ease both;
+  --animate-sheet-up: sheet-up 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-drawer-in: drawer-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-shake: shake 0.35s ease;
+  --animate-pop: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-halo: halo 2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  --animate-rise: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes sheet-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes drawer-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes shake {
+    20%,
+    60% {
+      transform: translateX(-7px);
+    }
+    40%,
+    80% {
+      transform: translateX(7px);
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes halo {
+    from {
+      opacity: 0.45;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* The kiosk's signature background: deep teal fading into bright teal, lit by a green and a
+   cyan glow in opposite corners. */
+@utility bg-brand-gradient {
+  background-image:
+    radial-gradient(90% 120% at 100% 0%, rgb(53 217 138 / 0.3) 0%, transparent 55%),
+    radial-gradient(80% 110% at 0% 100%, rgb(126 226 255 / 0.22) 0%, transparent 60%),
+    linear-gradient(175deg, var(--brand) 0%, var(--brand-hi) 100%);
+}
+
+@utility bg-btn-gradient {
+  background-image: linear-gradient(180deg, var(--btn-hi) 0%, var(--btn) 100%);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --stage: #0b1a1e;
+    --bg: #eef5f6;
+    --surface: #ffffff;
+    --surface-2: #dfebed;
+    --ink: #0b2b31;
+    --ink-2: #4a6469;
+    --ink-3: #6f8589;
+    --line: rgb(11 43 49 / 0.1);
+    --brand: #0f6676;
+    --brand-hi: #1699aa;
+    --link: #0e6676;
+    --accent: #1ea94c;
+    --accent-ink: #ffffff;
+    --accent-soft: #d5f5c9;
+    --accent-soft-ink: #0e6b31;
+    --btn: #0f6676;
+    --btn-hi: #188fa1;
+    --btn-fg: #ffffff;
+    --elev-soft: 0 0 0 1px rgb(11 43 49 / 0.04), 0 1px 2px rgb(11 43 49 / 0.05),
+      0 10px 24px -8px rgb(11 43 49 / 0.1);
+    --elev-float: 0 0 0 1px rgb(11 43 49 / 0.04), 0 22px 44px -16px rgb(11 43 49 / 0.38);
+    --elev-btn: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 12px 22px -12px rgb(15 102 118 / 0.85);
+    --success: #15803d;
+    --success-bg: #d5f5c9;
+    --warn: #9a5f05;
+    --warn-bg: #fbefd5;
+    --danger: #c2362c;
+    --danger-bg: #fbe5e2;
+    --k-seven: #d4521a;
+    --k-cvs: #c4252b;
+    --k-walgreens: #0e7c8b;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --stage: #020b0d;
+    --bg: #071a1e;
+    --surface: #0f272c;
+    --surface-2: #18363c;
+    --ink: #eaf6f7;
+    --ink-2: #9db8bc;
+    --ink-3: #68858a;
+    --line: rgb(255 255 255 / 0.1);
+    --brand: #0b4b57;
+    --brand-hi: #127d8c;
+    --link: #5cd3e0;
+    --accent-soft: rgb(47 200 100 / 0.18);
+    --accent-soft-ink: #7fe3a3;
+    --btn: #1cb5c7;
+    --btn-hi: #4fd6e4;
+    --btn-fg: #04262c;
+    --elev-soft: 0 0 0 1px rgb(255 255 255 / 0.06), 0 10px 24px -10px rgb(0 0 0 / 0.55);
+    --elev-float: 0 0 0 1px rgb(255 255 255 / 0.07), 0 24px 48px -16px rgb(0 0 0 / 0.7);
+    --elev-btn: inset 0 1px 0 rgb(255 255 255 / 0.4), 0 12px 24px -12px rgb(28 181 199 / 0.6);
+    --success: #5bd79a;
+    --success-bg: rgb(91 215 154 / 0.14);
+    --warn: #f2c063;
+    --warn-bg: rgb(242 192 99 / 0.14);
+    --danger: #ff8a80;
+    --danger-bg: rgb(255 138 128 / 0.14);
+    --k-seven: #ff9a66;
+    --k-cvs: #ff8a8e;
+    --k-walgreens: #5cd3e0;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--stage);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Leaflet renders markers outside React, so the map pins are styled here. */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--surface-2);
+}
+
+/* No keyless dark basemap exists, so dark mode recolours the standard tiles instead. */
+[data-theme='dark'] .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
+}
+
+.leaflet-control-attribution {
+  font-size: 9px;
+  border-top-left-radius: 8px;
+}
+
+.pin {
+  position: absolute;
+  left: 0;
+  top: -8px;
+  transform: translate(-50%, -100%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px 7px 9px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0b2b31;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.pin::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.pin i {
+  position: relative;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.pin b {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+}
+
+.pin.is-selected {
+  background: #0b2b31;
+  color: #ffffff;
+  transform: translate(-50%, -100%) scale(1.12);
+}
+
+.me-dot {
+  position: absolute;
+  left: -9px;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2f7bf6;
+  border: 3px solid #ffffff;
+  box-shadow:
+    0 0 0 8px rgb(47 123 246 / 0.2),
+    0 2px 6px rgb(0 0 0 / 0.3);
+}
