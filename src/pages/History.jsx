@@ -3,13 +3,12 @@ import { Search, SearchX } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import DepositRow from '../components/DepositRow'
 import { EmptyState, FilterChip, PageHeader } from '../components/ui'
-import { money, monthLabel, statusOf } from '../utils/format'
+import { money, monthLabel } from '../utils/format'
 
 const FILTERS = [
   { value: 'all', label: 'All' },
   { value: 'completed', label: 'Completed' },
   { value: 'pending', label: 'Awaiting scan' },
-  { value: 'expired', label: 'Expired' },
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
@@ -20,7 +19,7 @@ export default function History() {
 
   const needle = query.trim().toLowerCase()
   const visible = deposits.filter((d) => {
-    if (filter !== 'all' && statusOf(d) !== filter) return false
+    if (filter !== 'all' && d.status !== filter) return false
     if (!needle) return true
     return [d.locationName, d.terminal, d.accountLabel, d.type, d.ref, d.amount ?? '']
       .join(' ')
@@ -38,7 +37,7 @@ export default function History() {
       groups.push(group)
     }
     group.items.push(deposit)
-    if (statusOf(deposit) === 'completed') group.total += deposit.amount ?? 0
+    if (deposit.status === 'completed') group.total += deposit.amount ?? 0
   }
 
   return (

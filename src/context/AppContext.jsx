@@ -1,8 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react'
 import { DEMO_USER, seedAccounts, seedDeposits, seedNotifications } from '../data/seed'
-import { accountLabel, makeRef, money, CODE_TTL_MS, uid } from '../utils/format'
+import { accountLabel, makeRef, money, uid } from '../utils/format'
 
 const STORAGE_KEY = 'quickdeposit:v1'
+const DEMO_AMOUNTS = [50, 100, 150]
 
 function freshState() {
   const prefersDark =
@@ -131,28 +132,28 @@ export function AppProvider({ children }) {
         locationName: location.name,
         terminal: location.terminal,
         createdAt: now,
-        expiresAt: now + CODE_TTL_MS,
         status: 'pending',
       }
       dispatch({ type: 'addDeposit', deposit })
       notify(
         'Barcode ready',
-        `Scan it at ${location.name} within 15 minutes to make your deposit.`,
+        `Scan it at ${location.name} to make your deposit.`,
       )
       return deposit
     },
     completeDeposit: (deposit) => {
+      // Stand-in for the amount a real kiosk would report: each simulated scan takes the next
+      // sample amount in turn. Deposits made back when the amount was entered up front keep theirs.
+      const scanned = state.deposits.filter((d) => d.completedAt).length
+      const amount = deposit.amount ?? DEMO_AMOUNTS[scanned % DEMO_AMOUNTS.length]
       dispatch({
         type: 'updateDeposit',
         id: deposit.id,
-        patch: { status: 'completed', completedAt: Date.now() },
+        patch: { status: 'completed', completedAt: Date.now(), amount },
       })
       notify(
         'Deposit completed',
-        // Deposits made before the amount step was dropped still carry one.
-        deposit.amount == null
-          ? `Your deposit to ${deposit.accountLabel} at ${deposit.locationName} is complete.`
-          : `${money(deposit.amount)} was deposited to ${deposit.accountLabel} at ${deposit.locationName}.`,
+        `${money(amount)} was deposited to ${deposit.accountLabel} at ${deposit.locationName}.`,
       )
     },
     cancelDeposit: (id) => dispatch({ type: 'updateDeposit', id, patch: { status: 'cancelled' } }),

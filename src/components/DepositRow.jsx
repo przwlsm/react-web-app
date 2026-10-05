@@ -1,9 +1,9 @@
 import { locationById } from '../data/locations'
-import { cx, dayLabel, money, statusOf } from '../utils/format'
+import { cx, dayLabel, money } from '../utils/format'
 import { KindTile, StatusChip } from './ui'
 
 export default function DepositRow({ deposit, onClick }) {
-  const status = statusOf(deposit)
+  const { status } = deposit
   const completed = status === 'completed'
   return (
     <button

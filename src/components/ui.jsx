@@ -75,7 +75,6 @@ export function SectionTitle({ children, action }) {
 const CHIP_STYLES = {
   completed: 'bg-success-bg text-success',
   pending: 'bg-warn-bg text-warn',
-  expired: 'bg-surface-2 text-ink-2',
   cancelled: 'bg-danger-bg text-danger',
 }
 

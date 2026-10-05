@@ -5,7 +5,6 @@ import {
   Check,
   ChevronLeft,
   Landmark,
-  Navigation,
   Plus,
   X,
 } from 'lucide-react'
@@ -24,7 +23,7 @@ import {
 } from '../components/ui'
 import { bankById, bankGradient } from '../data/banks'
 import { LOCATIONS, USER_POSITION } from '../data/locations'
-import { cx, milesBetween, statusOf } from '../utils/format'
+import { cx, milesBetween, money } from '../utils/format'
 
 const STEPS = ['Account', 'Location']
 const KIND_FILTERS = [
@@ -208,9 +207,8 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
   )
 }
 
-function StepScan({ deposit, account, location, onDone, onSimulate }) {
+function StepScan({ deposit, account, onDone, onSimulate }) {
   const bank = bankById(account.bankId)
-  const directions = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`
   const steps = [
     `Go to ${deposit.locationName} (terminal ${deposit.terminal}).`,
     'Choose mobile deposit on the kiosk and hold this code up to the scanner.',
@@ -261,10 +259,6 @@ function StepScan({ deposit, account, location, onDone, onSimulate }) {
       </ol>
 
       <div className="mt-5 space-y-2">
-        <a href={directions} target="_blank" rel="noreferrer" className={buttonClass('ghost')}>
-          <Navigation />
-          Get directions
-        </a>
         <Button onClick={onDone}>Done</Button>
         <button
           type="button"
@@ -278,7 +272,7 @@ function StepScan({ deposit, account, location, onDone, onSimulate }) {
   )
 }
 
-function StepSuccess({ deposit, onDone, onAnother }) {
+function StepSuccess({ deposit, onDone }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col px-5 pb-[calc(1rem+env(safe-area-inset-bottom))]">
       <div className="flex flex-1 flex-col items-center justify-center text-center">
@@ -290,10 +284,13 @@ function StepSuccess({ deposit, onDone, onAnother }) {
           </span>
         </span>
         <h2 className="mt-7 text-[28px] font-extrabold tracking-tight">Deposit complete</h2>
-        <p className="mt-1.5 text-[15px] text-ink-2">Your deposit went through.</p>
+        <p className="mt-1.5 text-[15px] text-ink-2">
+          <b className="font-bold tabular-nums text-ink">{money(deposit.amount)}</b> was deposited.
+        </p>
 
         <dl className="mt-6 w-full animate-rise divide-y divide-line rounded-3xl bg-surface px-4 text-left shadow-soft [animation-delay:0.15s]">
           {[
+            ['Amount', money(deposit.amount)],
             ['To account', deposit.accountLabel],
             ['Location', deposit.locationName],
             ['Reference', deposit.ref],
@@ -312,12 +309,7 @@ function StepSuccess({ deposit, onDone, onAnother }) {
           ))}
         </dl>
       </div>
-      <div className="space-y-2">
-        <Button onClick={onDone}>Back to home</Button>
-        <Button variant="ghost" onClick={onAnother}>
-          Make another deposit
-        </Button>
-      </div>
+      <Button onClick={onDone}>Back to home</Button>
     </div>
   )
 }
@@ -339,13 +331,7 @@ export default function NewDeposit() {
   const account = accounts.find((a) => a.id === accountId)
   const location = NEARBY.find((l) => l.id === locationId)
   const created = deposits.find((d) => d.id === createdId)
-  const done = created && statusOf(created) === 'completed'
-
-  const restart = () => {
-    setStep(0)
-    setLocationId(null)
-    setCreatedId(null)
-  }
+  const done = created?.status === 'completed'
 
   const generate = () => {
     const deposit = createDeposit({ account, type: 'Cash', location })
@@ -398,12 +384,11 @@ export default function NewDeposit() {
 
       {created ? (
         done ? (
-          <StepSuccess deposit={created} onDone={() => navigate('/')} onAnother={restart} />
+          <StepSuccess deposit={created} onDone={() => navigate('/')} />
         ) : (
           <StepScan
             deposit={created}
             account={account}
-            location={location}
             onDone={() => navigate('/')}
             onSimulate={() => completeDeposit(created)}
           />

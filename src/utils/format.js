@@ -1,5 +1,4 @@
 export const MAX_DEPOSIT = 1000
-export const CODE_TTL_MS = 15 * 60 * 1000
 
 const usd = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -59,13 +58,8 @@ export function milesBetween(a, b) {
   return 3958.8 * 2 * Math.asin(Math.sqrt(h))
 }
 
-// A pending deposit whose barcode has timed out is shown as expired.
-export const statusOf = (deposit, now = Date.now()) =>
-  deposit.status === 'pending' && now > deposit.expiresAt ? 'expired' : deposit.status
-
 export const STATUS_LABEL = {
   pending: 'Awaiting scan',
   completed: 'Completed',
-  expired: 'Expired',
   cancelled: 'Cancelled',
 }

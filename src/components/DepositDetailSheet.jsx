@@ -1,7 +1,6 @@
 import { useApp } from '../context/AppContext'
-import { useNow } from '../hooks/useNow'
 import { locationById } from '../data/locations'
-import { dateTimeLabel, money, statusOf } from '../utils/format'
+import { dateTimeLabel, money } from '../utils/format'
 import DepositBarcode from './DepositBarcode'
 import Sheet from './Sheet'
 import { Button, StatusChip } from './ui'
@@ -18,12 +17,10 @@ function Row({ label, children }) {
 export default function DepositDetailSheet() {
   const { deposits, detailId, closeDetail, cancelDeposit, completeDeposit, showToast } = useApp()
   const deposit = deposits.find((d) => d.id === detailId)
-  // Tick only while a code is live, so the sheet flips to "Expired" on time.
-  const now = useNow(deposit?.status === 'pending' ? 1000 : null)
 
   if (!deposit) return null
 
-  const status = statusOf(deposit, now)
+  const { status } = deposit
   const location = locationById(deposit.locationId)
 
   return (
