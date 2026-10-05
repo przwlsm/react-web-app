@@ -28,7 +28,8 @@ export default function Login() {
 
   return (
     <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto bg-brand-gradient text-white">
-      <div className="relative flex min-h-[220px] flex-1 flex-col justify-end overflow-hidden px-6 pb-8 pt-[calc(2rem+env(safe-area-inset-top))]">
+      {/* min-h-fit: on short phones the hero keeps its full height and the screen scrolls, instead of the logo being clipped. */}
+      <div className="relative flex min-h-fit flex-1 flex-col justify-end overflow-hidden px-6 pb-8 pt-[calc(2rem+env(safe-area-inset-top))]">
         <span className="pointer-events-none absolute -right-14 -top-14 size-52 rounded-full border-[14px] border-[#35d98a]/80" />
         <span className="pointer-events-none absolute -left-20 top-24 size-52 rounded-full bg-white/5" />
         <div className="relative flex items-center gap-2.5 text-lg font-extrabold tracking-tight">

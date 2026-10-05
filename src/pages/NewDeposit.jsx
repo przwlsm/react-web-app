@@ -225,21 +225,24 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
           >
             {bank.mark}
           </span>
+          {/* The status sits beside the caption, not the account, so narrow phones keep the full account label. */}
           <span className="min-w-0 flex-1">
-            <span className="block text-[11px] font-bold uppercase tracking-wider text-ink-2">
-              Deposit to
+            <span className="flex items-center justify-between gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-ink-2">
+                Deposit to
+              </span>
+              <StatusChip status="pending" />
             </span>
-            <span className="block truncate text-[17px] font-extrabold tracking-tight">
+            <span className="mt-0.5 block text-[17px] font-extrabold leading-snug tracking-tight">
               {deposit.accountLabel}
             </span>
           </span>
-          <StatusChip status="pending" />
         </div>
         <div className="relative mx-5 border-t-2 border-dashed border-line">
           <span className="absolute -left-8 -top-3 size-6 rounded-full bg-bg" />
           <span className="absolute -right-8 -top-3 size-6 rounded-full bg-bg" />
         </div>
-        <div className="px-3 pb-5 pt-4">
+        <div className="px-2 pb-5 pt-4">
           <p className="mb-3 text-center text-xs font-bold uppercase tracking-wider text-ink-2">
             Scan at the kiosk
           </p>

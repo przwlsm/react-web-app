@@ -23,7 +23,7 @@ export default function DepositBarcode({ deposit }) {
       <div
         role="img"
         aria-label={`Deposit barcode ${deposit.ref}`}
-        className="max-w-full rounded-3xl bg-white px-5 py-4 shadow-soft"
+        className="max-w-full rounded-3xl bg-white p-4 shadow-soft"
       >
         <svg ref={svgRef} className="block h-auto max-w-full" />
       </div>
