@@ -4,7 +4,7 @@
   "description": "Deposit cash to your bank account at a kiosk near you.",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#0F6676",
   "theme_color": "#0F6676",
   "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]

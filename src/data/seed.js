@@ -4,7 +4,7 @@ import { accountLabel, makeRef, uid } from '../utils/format'
 const HOUR = 3600000
 const DAY = 24 * HOUR
 
-export const DEMO_USER = { name: 'Alex Morgan', phone: '' }
+export const DEMO_USER = { name: 'Omar Saleh', phone: '' }
 
 export const seedAccounts = () => [
   {

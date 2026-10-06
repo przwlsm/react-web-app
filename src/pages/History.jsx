@@ -59,7 +59,7 @@ export default function History() {
         </label>
       </PageHeader>
 
-      <div className="no-scrollbar flex shrink-0 gap-2 overflow-x-auto px-5 pb-3 pt-4">
+      <div className="no-scrollbar gutter flex shrink-0 gap-2 overflow-x-auto pb-3 pt-4">
         {FILTERS.map((f) => (
           <FilterChip key={f.value} active={filter === f.value} onClick={() => setFilter(f.value)}>
             {f.label}
@@ -67,7 +67,7 @@ export default function History() {
         ))}
       </div>
 
-      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-5 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
+      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto gutter pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-10">
         {groups.length === 0 ? (
           <EmptyState Icon={SearchX} title="No deposits found">
             Try a different search or filter.

@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import { Barcode, ChevronRight, CirclePlus, History, Home, LogOut, Settings, X } from 'lucide-react'
 import { useApp } from '../context/AppContext'
-import { cx } from '../utils/format'
+import { cx, initialsOf } from '../utils/format'
 
-const LINKS = [
+export const NAV_LINKS = [
   { to: '/', label: 'Home', Icon: Home, end: true },
   { to: '/accounts/new', label: 'Add New Account', Icon: CirclePlus },
   { to: '/deposit/new', label: 'New Deposit', Icon: Barcode },
@@ -14,12 +14,6 @@ const LINKS = [
 export default function SideMenu() {
   const { user, menuOpen, closeMenu, askLogout } = useApp()
   if (!menuOpen) return null
-
-  const initials = user.name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
 
   return (
     <div className="absolute inset-0 z-40 animate-fade-in bg-black/45" onClick={closeMenu}>
@@ -32,7 +26,7 @@ export default function SideMenu() {
       >
         <div className="flex items-center gap-3 rounded-3xl bg-brand-gradient p-4 text-white">
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/20 text-base font-extrabold">
-            {initials}
+            {initialsOf(user.name)}
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-base font-extrabold">{user.name}</p>
@@ -49,7 +43,7 @@ export default function SideMenu() {
         </div>
 
         <nav aria-label="Menu" className="mt-4 flex-1 space-y-1">
-          {LINKS.map(({ to, label, Icon, end }) => (
+          {NAV_LINKS.map(({ to, label, Icon, end }) => (
             <NavLink
               key={to}
               to={to}

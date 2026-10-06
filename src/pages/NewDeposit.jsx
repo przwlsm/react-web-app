@@ -50,7 +50,7 @@ function StepTitle({ title, children }) {
 function StepAccount({ accounts, accountId, onSelect, onNext }) {
   if (accounts.length === 0) {
     return (
-      <div className="min-h-0 flex-1 px-5 pt-4">
+      <div className="gutter min-h-0 flex-1 pt-4 [--page:26rem]">
         <EmptyState
           Icon={Landmark}
           title="Add a bank account first"
@@ -69,7 +69,7 @@ function StepAccount({ accounts, accountId, onSelect, onNext }) {
 
   return (
     <>
-      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-5 pb-32">
+      <div className="no-scrollbar gutter min-h-0 flex-1 overflow-y-auto pb-32">
         <StepTitle title="Where should it go?">Choose the bank account to deposit into.</StepTitle>
         <div role="radiogroup" aria-label="Bank account" className="space-y-3">
           {accounts.map((account) => {
@@ -140,70 +140,74 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
   }, [locationId])
 
   return (
-    <>
-      <div className="relative -mt-6 h-[45%] min-h-[240px] shrink-0">
+    // Stacked on phones (map on top); from tablet width up the list becomes a left-hand panel.
+    <div className="-mt-6 flex min-h-0 flex-1 flex-col md:flex-row-reverse">
+      <div className="relative h-[45%] min-h-[240px] shrink-0 md:h-auto md:min-h-0 md:flex-1">
         <LocationMap
           locations={visible}
           selectedId={locationId}
           onSelect={onSelect}
           user={USER_POSITION}
         />
-        <div className="no-scrollbar absolute inset-x-0 top-9 z-10 flex gap-2 overflow-x-auto px-4">
-          {KIND_FILTERS.map((f) => (
-            <FilterChip key={f.value} active={kind === f.value} onClick={() => setKind(f.value)}>
-              {f.label}
-            </FilterChip>
-          ))}
-        </div>
       </div>
 
-      <div
-        ref={listRef}
-        className="no-scrollbar relative z-10 -mt-5 min-h-0 flex-1 overflow-y-auto rounded-t-[28px] bg-bg px-5 pb-32 pt-5"
-      >
-        <div className="mb-3 flex items-baseline justify-between">
-          <h2 className="text-[19px] font-extrabold tracking-tight">Nearby deposit locations</h2>
-          <p className="text-[13px] font-semibold text-ink-2">{visible.length} found</p>
-        </div>
-        <div role="radiogroup" aria-label="Deposit location" className="space-y-2.5">
-          {visible.map((location) => {
-            const selected = location.id === locationId
-            return (
-              <button
-                key={location.id}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                onClick={() => onSelect(location.id)}
-                className={cx(
-                  'flex w-full scroll-mt-2 items-center gap-3 rounded-3xl border-2 bg-surface p-3.5 text-left transition active:scale-[0.99]',
-                  selected ? 'border-accent' : 'border-transparent shadow-soft',
-                )}
-              >
-                <KindTile kind={location.kind} />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[15px] font-bold">{location.name}</span>
-                  <span className="block truncate text-xs text-ink-2">{location.address}</span>
-                  <span className="mt-1 block truncate text-[11px] font-semibold text-ink-3">
-                    {location.hours} · Terminal {location.terminal}
+      <div className="relative z-10 -mt-5 flex min-h-0 flex-1 flex-col md:mt-0 md:w-[400px] md:flex-none md:shadow-float">
+        <div
+          ref={listRef}
+          className="no-scrollbar min-h-0 flex-1 overflow-y-auto rounded-t-[28px] bg-bg px-5 pb-32 pt-5 md:rounded-none md:pt-11"
+        >
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-[19px] font-extrabold tracking-tight">Nearby deposit locations</h2>
+            <p className="text-[13px] font-semibold text-ink-2">{visible.length} found</p>
+          </div>
+          {/* The filters live with the list, not on the map, so they never sit on top of a pin. */}
+          <div className="no-scrollbar -mx-5 mb-3 flex gap-2 overflow-x-auto px-5 pb-1">
+            {KIND_FILTERS.map((f) => (
+              <FilterChip key={f.value} active={kind === f.value} onClick={() => setKind(f.value)}>
+                {f.label}
+              </FilterChip>
+            ))}
+          </div>
+          <div role="radiogroup" aria-label="Deposit location" className="space-y-2.5">
+            {visible.map((location) => {
+              const selected = location.id === locationId
+              return (
+                <button
+                  key={location.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => onSelect(location.id)}
+                  className={cx(
+                    'flex w-full scroll-mt-2 items-center gap-3 rounded-3xl border-2 bg-surface p-3.5 text-left transition active:scale-[0.99]',
+                    selected ? 'border-accent' : 'border-transparent shadow-soft',
+                  )}
+                >
+                  <KindTile kind={location.kind} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[15px] font-bold leading-snug">{location.name}</span>
+                    <span className="block truncate text-xs text-ink-2">{location.address}</span>
+                    <span className="mt-1 block truncate text-[11px] font-semibold text-ink-3">
+                      {location.hours} · Terminal {location.terminal}
+                    </span>
                   </span>
-                </span>
-                <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold tabular-nums">
-                  {location.miles.toFixed(1)} mi
-                </span>
-              </button>
-            )
-          })}
+                  <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold tabular-nums">
+                    {location.miles.toFixed(1)} mi
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
-      </div>
 
-      <CtaBar>
-        <Button disabled={!locationId} onClick={onGenerate}>
-          {locationId && <Barcode />}
-          {locationId ? 'Generate barcode' : 'Select a location'}
-        </Button>
-      </CtaBar>
-    </>
+        <CtaBar>
+          <Button disabled={!locationId} onClick={onGenerate}>
+            {locationId && <Barcode />}
+            {locationId ? 'Generate barcode' : 'Select a location'}
+          </Button>
+        </CtaBar>
+      </div>
+    </div>
   )
 }
 
@@ -211,11 +215,11 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
   const bank = bankById(account.bankId)
   const steps = [
     `Go to ${deposit.locationName} (terminal ${deposit.terminal}).`,
-    'Choose mobile deposit on the kiosk and hold this code up to the scanner.',
+    'Choose bank deposit on the kiosk and hold this code up to the scanner.',
     `Insert your ${deposit.type.toLowerCase()} to finish the deposit.`,
   ]
   return (
-    <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5">
+    <div className="no-scrollbar gutter min-h-0 flex-1 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 [--page:26rem] md:pt-8">
       {/* Laid out like a ticket: who and where on the stub, the code below the tear line. */}
       <div className="animate-rise rounded-[28px] bg-surface shadow-float">
         <div className="flex items-center gap-3 p-4">
@@ -243,8 +247,9 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
           <span className="absolute -right-8 -top-3 size-6 rounded-full bg-bg" />
         </div>
         <div className="px-2 pb-5 pt-4">
-          <p className="mb-3 text-center text-xs font-bold uppercase tracking-wider text-ink-2">
-            Scan at the kiosk
+          <p className="mx-auto mb-3 max-w-[36ch] px-2 text-center text-[13px] font-medium leading-snug text-ink-2">
+            Scan the barcode below. You will pay <b className="font-bold text-ink">$1</b> in fees
+            when you deposit at these retailers.
           </p>
           <DepositBarcode deposit={deposit} />
         </div>
@@ -277,8 +282,8 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
 
 function StepSuccess({ deposit, onDone }) {
   return (
-    <div className="flex min-h-0 flex-1 flex-col px-5 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-      <div className="flex flex-1 flex-col items-center justify-center text-center">
+    <div className="no-scrollbar gutter flex min-h-0 flex-1 flex-col overflow-y-auto pb-[calc(1rem+env(safe-area-inset-bottom))] [--page:26rem] md:pb-10">
+      <div className="flex flex-1 flex-col items-center justify-center py-6 text-center">
         <span className="relative grid place-items-center">
           <span className="absolute size-24 animate-halo rounded-full bg-accent motion-reduce:hidden" />
           <span className="absolute size-24 animate-halo rounded-full bg-accent [animation-delay:1s] motion-reduce:hidden" />
@@ -312,7 +317,9 @@ function StepSuccess({ deposit, onDone }) {
           ))}
         </dl>
       </div>
-      <Button onClick={onDone}>Back to home</Button>
+      <Button className="shrink-0" onClick={onDone}>
+        Done
+      </Button>
     </div>
   )
 }
@@ -343,7 +350,7 @@ export default function NewDeposit() {
 
   return (
     <div className="relative flex min-h-0 flex-1 animate-page-in flex-col">
-      <header className="relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient px-4 pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white">
+      <header className="gutter relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white [--gutter:1rem]">
         <div className="flex items-center gap-3">
           {created ? (
             <span className="size-11" />

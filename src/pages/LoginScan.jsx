@@ -136,7 +136,7 @@ export default function LoginScan() {
           {/* The oversized shadow dims everything outside the viewfinder. */}
           <span className="size-60 rounded-[32px] border-[3px] border-white shadow-[0_0_0_100vmax_rgb(0_0_0/0.5)]" />
           <p className="relative mt-6 text-center text-sm font-semibold">
-            Point your camera at a QR code or barcode.
+            Point your camera at the QR code.
           </p>
         </div>
       )}

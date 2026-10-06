@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext'
 import Sheet from '../components/Sheet'
 import { Button, PageHeader, Toggle } from '../components/ui'
 import { bankById, bankGradient } from '../data/banks'
-import { accountLabel, MAX_DEPOSIT, money } from '../utils/format'
+import { accountLabel, initialsOf, MAX_DEPOSIT, money } from '../utils/format'
 
 function Group({ title, children }) {
   return (
@@ -40,20 +40,14 @@ export default function Settings() {
     useApp()
   const [removing, setRemoving] = useState(null)
 
-  const initials = user.name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-
   return (
     <div className="flex min-h-0 flex-1 animate-page-in flex-col">
       <PageHeader title="Settings" />
 
-      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-5 pb-[calc(7.5rem+env(safe-area-inset-bottom))] pt-5">
+      <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto gutter pb-[calc(10rem+env(safe-area-inset-bottom))] pt-5 lg:pb-10">
         <div className="flex items-center gap-4 rounded-3xl bg-surface p-4 shadow-soft">
           <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-accent-soft text-lg font-extrabold text-accent-soft-ink">
-            {initials}
+            {initialsOf(user.name)}
           </span>
           <div className="min-w-0">
             <p className="truncate text-lg font-extrabold tracking-tight">{user.name}</p>

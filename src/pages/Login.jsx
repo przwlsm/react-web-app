@@ -27,22 +27,22 @@ export default function Login() {
   }
 
   return (
-    <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto bg-brand-gradient text-white">
-      {/* min-h-fit: on short phones the hero keeps its full height and the screen scrolls, instead of the logo being clipped. */}
-      <div className="relative flex min-h-fit flex-1 flex-col justify-end overflow-hidden px-6 pb-8 pt-[calc(2rem+env(safe-area-inset-top))]">
+    <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto bg-brand-gradient text-white md:flex-row md:overflow-hidden">
+      {/* min-h-fit: on short phones the hero keeps its full height and the screen scrolls, instead of the logo being clipped.
+          From tablet width up the hero and the form sit side by side. */}
+      <div className="relative flex min-h-fit flex-1 flex-col justify-end overflow-hidden px-6 pb-8 pt-[calc(2rem+env(safe-area-inset-top))] md:min-h-0 md:justify-center md:px-12 lg:px-20">
         <span className="pointer-events-none absolute -right-14 -top-14 size-52 rounded-full border-[14px] border-[#35d98a]/80" />
         <span className="pointer-events-none absolute -left-20 top-24 size-52 rounded-full bg-white/5" />
         <div className="relative flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
           <span className="grid size-10 place-items-center rounded-xl bg-white text-accent">
             <Barcode className="size-5" />
           </span>
-          QuickDeposit
+          BankDeposit
         </div>
-        <h1 className="relative mt-6 text-[34px] font-extrabold leading-[1.1] tracking-tight">
-          Deposit cash at a store{' '}
-          <span className="rounded-lg bg-accent px-2 text-accent-ink">near you.</span>
+        <h1 className="relative mt-6 text-[34px] font-extrabold leading-[1.1] tracking-tight md:text-5xl md:leading-[1.15] lg:text-6xl lg:leading-[1.15]">
+          Deposit cash at a store near you.
         </h1>
-        <p className="relative mt-3 max-w-[30ch] text-[15px] text-white/90">
+        <p className="relative mt-3 max-w-[30ch] text-[15px] text-white/90 md:mt-5 md:text-lg">
           Pick an account, choose a location, and scan your code at the kiosk.
         </p>
       </div>
@@ -50,7 +50,7 @@ export default function Login() {
       <form
         onSubmit={submit}
         noValidate
-        className="animate-sheet-up space-y-4 rounded-t-[32px] bg-bg px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-7 text-ink"
+        className="no-scrollbar animate-sheet-up space-y-4 rounded-t-[32px] bg-bg px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-7 text-ink md:flex md:w-[440px] md:shrink-0 md:animate-fade-in md:flex-col md:justify-center-safe md:overflow-y-auto md:rounded-l-[40px] md:rounded-tr-none md:px-10 md:py-10"
       >
         <h2 className="text-2xl font-extrabold tracking-tight">Log in</h2>
         <Field label="Phone number" error={error}>

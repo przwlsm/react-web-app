@@ -62,15 +62,16 @@ export default function AddAccount() {
       <form
         onSubmit={submit}
         noValidate
-        className="no-scrollbar min-h-0 flex-1 space-y-5 overflow-y-auto px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5"
+        className="no-scrollbar gutter min-h-0 flex-1 space-y-5 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5"
       >
         <AccountCard
+          className="md:max-w-sm"
           account={{ bankId, bankName, type, last4: number.slice(-4), holder: holder || ' ' }}
         />
 
         <div>
           <p className="mb-2 text-[13px] font-bold text-ink-2">Bank</p>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 md:grid-cols-5">
             {BANKS.map((bank) => {
               const selected = bank.id === bankId
               return (
@@ -118,55 +119,57 @@ export default function AddAccount() {
           <Segmented label="Account type" options={ACCOUNT_TYPES} value={type} onChange={setType} />
         </div>
 
-        <Field label="Account holder" error={errors.holder}>
-          <input
-            value={holder}
-            onChange={(e) => edit(setHolder, 'holder')(e.target.value)}
-            autoComplete="name"
-            placeholder="Full name"
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="Routing number" error={errors.routing} hint="The 9-digit number on your checks.">
-          <input
-            value={routing}
-            onChange={(e) => edit(setRouting, 'routing')(digitsOnly(e.target.value, 9))}
-            inputMode="numeric"
-            autoComplete="off"
-            placeholder="000000000"
-            className={cx(inputClass, 'font-mono tracking-widest')}
-          />
-        </Field>
-
-        <Field label="Account number" error={errors.number}>
-          <input
-            value={number}
-            onChange={(e) => edit(setNumber, 'number', 'confirm')(digitsOnly(e.target.value, 17))}
-            inputMode="numeric"
-            autoComplete="off"
-            placeholder="Account number"
-            className={cx(inputClass, 'font-mono tracking-widest')}
-          />
-        </Field>
-
-        <Field label="Confirm account number" error={errors.confirm}>
-          <input
-            value={confirm}
-            onChange={(e) => edit(setConfirm, 'confirm')(digitsOnly(e.target.value, 17))}
-            inputMode="numeric"
-            autoComplete="off"
-            placeholder="Re-enter account number"
-            className={cx(inputClass, 'font-mono tracking-widest')}
-          />
-        </Field>
+        {/* One column on phones; two from tablet width up. */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Account holder" error={errors.holder}>
+            <input
+              value={holder}
+              onChange={(e) => edit(setHolder, 'holder')(e.target.value)}
+              autoComplete="name"
+              placeholder="Full name"
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Routing number" error={errors.routing} hint="The 9-digit number on your checks.">
+            <input
+              value={routing}
+              onChange={(e) => edit(setRouting, 'routing')(digitsOnly(e.target.value, 9))}
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="000000000"
+              className={cx(inputClass, 'font-mono tracking-widest')}
+            />
+          </Field>
+          <Field label="Account number" error={errors.number}>
+            <input
+              value={number}
+              onChange={(e) => edit(setNumber, 'number', 'confirm')(digitsOnly(e.target.value, 17))}
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="Account number"
+              className={cx(inputClass, 'font-mono tracking-widest')}
+            />
+          </Field>
+          <Field label="Confirm account number" error={errors.confirm}>
+            <input
+              value={confirm}
+              onChange={(e) => edit(setConfirm, 'confirm')(digitsOnly(e.target.value, 17))}
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="Re-enter account number"
+              className={cx(inputClass, 'font-mono tracking-widest')}
+            />
+          </Field>
+        </div>
 
         <p className="flex items-start gap-2 text-xs text-ink-2">
           <ShieldCheck className="mt-px size-4 shrink-0 text-success" />
           Only the last 4 digits are shown in the app. The rest stays masked.
         </p>
 
-        <Button type="submit">Add account</Button>
+        <Button type="submit" className="md:w-64">
+          Add account
+        </Button>
       </form>
     </div>
   )

@@ -45,7 +45,7 @@ export function IconButton({ label, small, tone = 'surface', className, children
 // Teal band across the top of a screen; children (search, progress) sit inside it.
 export function PageHeader({ title, subtitle, onBack, right, children }) {
   return (
-    <header className="relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient px-4 pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white">
+    <header className="gutter relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white [--gutter:1rem]">
       <div className="flex min-h-11 items-center gap-3">
         {onBack && (
           <IconButton tone="brand" label="Back" onClick={onBack}>
@@ -203,8 +203,8 @@ export function EmptyState({ Icon, title, children, action }) {
 // Sticky action area pinned to the bottom of a screen, fading the content behind it.
 export function CtaBar({ children }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-bg from-65% to-transparent px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-8">
-      <div className="pointer-events-auto space-y-2">{children}</div>
+    <div className="gutter pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-bg from-65% to-transparent pb-[calc(1rem+env(safe-area-inset-bottom))] pt-8">
+      <div className="pointer-events-auto mx-auto max-w-md space-y-2">{children}</div>
     </div>
   )
 }

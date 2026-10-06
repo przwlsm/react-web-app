@@ -34,7 +34,7 @@ export default function LoginOtp() {
       <form
         onSubmit={submit}
         noValidate
-        className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-8"
+        className="no-scrollbar gutter min-h-0 flex-1 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-8 [--page:24rem] md:pt-14"
       >
         <div className="flex flex-col items-center text-center">
           <span className="grid size-[72px] animate-pop place-items-center rounded-[26px] bg-accent-soft text-accent-soft-ink">
@@ -97,9 +97,6 @@ export default function LoginOtp() {
         <Button type="submit" className="mt-4">
           Log in
         </Button>
-        <p className="mt-4 text-center text-xs text-ink-3">
-          Demo build — no text message is sent. Any {OTP_LENGTH}-digit code will log you in.
-        </p>
       </form>
     </div>
   )

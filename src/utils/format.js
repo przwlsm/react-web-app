@@ -23,6 +23,13 @@ export function makeRef() {
   return `QD-${pick(4)}-${pick(4)}`
 }
 
+export const initialsOf = (name) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+
 export const accountLabel = (account) => `${account.bankName} •••• ${account.last4}`
 
 const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
