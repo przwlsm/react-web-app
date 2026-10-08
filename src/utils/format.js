@@ -1,3 +1,4 @@
+export const MIN_DEPOSIT = 5
 export const MAX_DEPOSIT = 1000
 
 const usd = new Intl.NumberFormat('en-US', {
@@ -16,11 +17,12 @@ export const digitsOnly = (value, max) => value.replace(/\D/g, '').slice(0, max)
 export const uid = (prefix = 'id') =>
   `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`
 
+// A 15-digit reference such as 262241000030637: a fixed 10-digit prefix, then 5 random digits.
+const REF_PREFIX = '2622410000'
+
 export function makeRef() {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-  const pick = (n) =>
-    Array.from({ length: n }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join('')
-  return `BD-${pick(4)}-${pick(4)}`
+  const tail = Math.floor(Math.random() * 100000)
+  return REF_PREFIX + String(tail).padStart(5, '0')
 }
 
 export const initialsOf = (name) =>

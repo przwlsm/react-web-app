@@ -1,9 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Barcode, Bell, Inbox, LogOut, Menu, Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, Barcode, Bell, Inbox, LogOut, Menu, Plus } from 'lucide-react'
 import { useApp } from '../context/AppContext'
-import AccountCard from '../components/AccountCard'
 import DepositRow from '../components/DepositRow'
 import { EmptyState, IconButton, SectionTitle } from '../components/ui'
+import { bankById, bankGradient } from '../data/banks'
 import { MAX_DEPOSIT, money } from '../utils/format'
 
 function greeting() {
@@ -16,7 +16,6 @@ function greeting() {
 export default function Home() {
   const { user, accounts, deposits, notifications, openMenu, openNotifications, askLogout, openDetail } =
     useApp()
-  const navigate = useNavigate()
 
   const unread = notifications.filter((n) => !n.read).length
   const today = new Date()
@@ -103,32 +102,62 @@ export default function Home() {
                 My accounts
               </SectionTitle>
             </div>
-            {/* A swipeable row on phones. From tablet width up the cards wrap into a grid, so none
-                is left off-screen where a mouse cannot reach it. */}
-            <div className="no-scrollbar gutter flex snap-x snap-mandatory gap-3 overflow-x-auto pb-5 md:grid md:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] md:overflow-x-visible xl:px-0">
-              {accounts.map((account) => (
-                <AccountCard
-                  key={account.id}
-                  account={account}
-                  className="w-[80%] shrink-0 snap-center md:w-auto"
-                  onClick={() => navigate(`/deposit/new?account=${account.id}`)}
-                />
-              ))}
-              <Link
-                to="/accounts/new"
-                className="flex min-h-[10.75rem] w-[46%] shrink-0 snap-center flex-col items-center justify-center gap-2 rounded-[1.625rem] border-2 border-dashed border-ink/15 text-center text-[0.8125rem] font-bold text-ink-2 transition hover:border-ink/30 hover:text-ink active:scale-[0.98] md:w-auto"
-              >
-                <span className="grid size-11 place-items-center rounded-full bg-surface shadow-soft">
-                  <Plus className="size-5" />
-                </span>
-                Add new
-                <br />
-                account
-              </Link>
-            </div>
+            {/* A compact list of slim cards in each bank's colours, so every account is on screen
+                without swiping. Two columns on tablets; one again once deposits sit alongside. */}
+            <ul className="gutter grid gap-2.5 md:grid-cols-2 xl:grid-cols-1 xl:px-0">
+              {accounts.map((account) => {
+                const bank = bankById(account.bankId)
+                return (
+                  <li key={account.id}>
+                    <Link
+                      to={`/deposit/new?account=${account.id}`}
+                      aria-label={`Deposit to ${account.bankName} ${account.type} ending in ${account.last4}`}
+                      style={bankGradient(bank)}
+                      className="relative flex items-center gap-3 overflow-hidden rounded-[1.375rem] px-4 py-3.5 text-white shadow-soft transition hover:brightness-110 active:scale-[0.98]"
+                    >
+                      {/* The same sheen and soft circle as the full-size account card. */}
+                      <span className="pointer-events-none absolute inset-0 rounded-[1.375rem] bg-linear-to-br from-white/20 via-transparent to-black/15 ring-1 ring-inset ring-white/20" />
+                      <span className="pointer-events-none absolute -top-12 right-16 size-28 rounded-full bg-white/10" />
+
+                      <span className="relative grid size-11 shrink-0 place-items-center rounded-2xl bg-white/20 text-[0.8125rem] font-extrabold ring-1 ring-inset ring-white/25">
+                        {bank.mark}
+                      </span>
+                      <span className="relative min-w-0 flex-1">
+                        <span className="block truncate text-[0.9375rem] font-bold leading-snug">
+                          {account.bankName}
+                        </span>
+                        <span className="mt-0.5 block truncate text-xs font-medium text-white/80">
+                          {account.type} ·{' '}
+                          <span className="font-mono tracking-wider">•••• {account.last4}</span>
+                        </span>
+                      </span>
+                      <span
+                        style={{ color: bank.to }}
+                        className="relative flex shrink-0 items-center gap-1 rounded-full bg-white py-1.5 pl-3 pr-2.5 text-xs font-extrabold shadow-soft"
+                      >
+                        Deposit
+                        <ArrowRight className="size-3.5" strokeWidth={2.5} />
+                      </span>
+                    </Link>
+                  </li>
+                )
+              })}
+              {/* Adding lives in the section header; the row only fills in when the list is empty. */}
+              {accounts.length === 0 && (
+                <li>
+                  <Link
+                    to="/accounts/new"
+                    className="flex min-h-[4.25rem] items-center justify-center gap-2 rounded-[1.375rem] border-2 border-dashed border-ink/15 text-sm font-bold text-ink-2 transition hover:border-ink/30 hover:text-ink active:scale-[0.98]"
+                  >
+                    <Plus className="size-4" />
+                    Add new account
+                  </Link>
+                </li>
+              )}
+            </ul>
           </section>
 
-          <section className="gutter mt-2 xl:mt-0 xl:px-0">
+          <section className="gutter mt-6 xl:mt-0 xl:px-0">
             <SectionTitle
               action={
                 deposits.length > 0 && (

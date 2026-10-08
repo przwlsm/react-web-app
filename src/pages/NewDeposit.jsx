@@ -4,12 +4,15 @@ import {
   Barcode,
   Check,
   ChevronLeft,
+  Info,
   Landmark,
+  Navigation,
   Plus,
   X,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import DepositBarcode from '../components/DepositBarcode'
+import DirectionsSheet from '../components/DirectionsSheet'
 import LocationMap from '../components/LocationMap'
 import {
   Button,
@@ -23,7 +26,7 @@ import {
 } from '../components/ui'
 import { bankById, bankGradient } from '../data/banks'
 import { LOCATIONS, USER_POSITION } from '../data/locations'
-import { cx, milesBetween, money } from '../utils/format'
+import { cx, MAX_DEPOSIT, milesBetween, MIN_DEPOSIT, money } from '../utils/format'
 
 const STEPS = ['Account', 'Location']
 const KIND_FILTERS = [
@@ -133,10 +136,18 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
   const visible = useMemo(() => NEARBY.filter((l) => kind === 'all' || l.kind === kind), [kind])
   const listRef = useRef(null)
 
+  // A pin tapped on the map may belong to a tile that is scrolled away or sitting under the
+  // CTA bar, so bring that tile to the top of the list. Tiles already in clear view stay put.
   useEffect(() => {
-    listRef.current
-      ?.querySelector('[aria-checked="true"]')
-      ?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    const list = listRef.current
+    const tile = list?.querySelector('[aria-checked="true"]')
+    if (!tile) return
+    const box = list.getBoundingClientRect()
+    const rect = tile.getBoundingClientRect()
+    // The list's bottom padding is the strip the CTA bar covers.
+    const clearBottom = box.bottom - parseFloat(getComputedStyle(list).paddingBottom)
+    if (rect.top >= box.top && rect.bottom <= clearBottom) return
+    list.scrollTo({ top: list.scrollTop + rect.top - box.top - 8, behavior: 'smooth' })
   }, [locationId])
 
   return (
@@ -179,7 +190,7 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
                   aria-checked={selected}
                   onClick={() => onSelect(location.id)}
                   className={cx(
-                    'flex w-full scroll-mt-2 items-center gap-3 rounded-3xl border-2 bg-surface p-3.5 text-left transition active:scale-[0.99]',
+                    'flex w-full items-center gap-3 rounded-3xl border-2 bg-surface p-3.5 text-left transition active:scale-[0.99]',
                     selected ? 'border-accent' : 'border-transparent shadow-soft hover:border-ink/15',
                   )}
                 >
@@ -211,7 +222,7 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
   )
 }
 
-function StepScan({ deposit, account, onDone, onSimulate }) {
+function StepScan({ deposit, account, location, onDirections, onDone, onSimulate }) {
   const bank = bankById(account.bankId)
   const steps = [
     `Go to ${deposit.locationName} (terminal ${deposit.terminal}).`,
@@ -252,7 +263,37 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
             when you deposit at these retailers.
           </p>
           <DepositBarcode deposit={deposit} />
+          <p className="mx-auto mt-4 flex w-fit items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1.5 text-xs font-semibold text-ink-2">
+            <Info className="size-3.5 shrink-0" />
+            <span>
+              Deposit <b className="font-bold text-ink">{money(MIN_DEPOSIT)}</b> to{' '}
+              <b className="font-bold text-ink">{money(MAX_DEPOSIT)}</b> per transaction.
+            </span>
+          </p>
         </div>
+      </div>
+
+      {/* Where to take the code, with a way to get there. */}
+      <div className="mt-4 rounded-3xl bg-surface p-3.5 shadow-soft">
+        <div className="flex items-center gap-3">
+          <KindTile kind={location.kind} />
+          <span className="min-w-0 flex-1">
+            <span className="block text-[0.9375rem] font-bold leading-snug">{location.name}</span>
+            <span className="mt-0.5 block truncate text-xs text-ink-2">{location.address}</span>
+          </span>
+          <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold tabular-nums">
+            {location.miles.toFixed(1)} mi
+          </span>
+        </div>
+        {/* Tonal, so it does not compete with Done as the screen's main action. */}
+        <button
+          type="button"
+          onClick={onDirections}
+          className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-link/10 text-sm font-bold text-link transition hover:bg-link/15 active:scale-[0.98]"
+        >
+          <Navigation className="size-4" />
+          Get directions
+        </button>
       </div>
 
       <ol className="mt-4 space-y-3 rounded-3xl bg-surface p-4 shadow-soft">
@@ -337,6 +378,7 @@ export default function NewDeposit() {
   )
   const [locationId, setLocationId] = useState(null)
   const [createdId, setCreatedId] = useState(null)
+  const [directionsOpen, setDirectionsOpen] = useState(false)
 
   const account = accounts.find((a) => a.id === accountId)
   const location = NEARBY.find((l) => l.id === locationId)
@@ -399,6 +441,8 @@ export default function NewDeposit() {
           <StepScan
             deposit={created}
             account={account}
+            location={location}
+            onDirections={() => setDirectionsOpen(true)}
             onDone={() => navigate('/')}
             onSimulate={() => completeDeposit(created)}
           />
@@ -417,6 +461,14 @@ export default function NewDeposit() {
             <StepLocation locationId={locationId} onSelect={setLocationId} onGenerate={generate} />
           )}
         </>
+      )}
+
+      {location && (
+        <DirectionsSheet
+          open={directionsOpen}
+          onClose={() => setDirectionsOpen(false)}
+          location={location}
+        />
       )}
     </div>
   )

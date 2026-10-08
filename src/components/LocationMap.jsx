@@ -9,7 +9,8 @@ const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 const ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
-export default function LocationMap({ locations, selectedId, onSelect, user }) {
+// `route` is an optional list of [lat, lng] points; when given, the map draws it and frames it.
+export default function LocationMap({ locations, selectedId, onSelect, user, route }) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef(null)
@@ -55,29 +56,52 @@ export default function LocationMap({ locations, selectedId, onSelect, user }) {
         title: location.name,
         zIndexOffset: selected ? 1000 : 0,
       })
-        .on('click', () => onSelect(location.id))
+        .on('click', () => onSelect?.(location.id))
         .addTo(group)
     })
   }, [locations, selectedId, onSelect])
 
   useEffect(() => {
     const target = locations.find((l) => l.id === selectedId)
-    if (!target) return
+    // With a route the map frames the whole trip instead of centring on the pin.
+    if (!target || route) return
     mapRef.current.panTo([target.lat, target.lng], { animate: true, duration: 0.5 })
     // Deliberately keyed on the selection only: re-filtering the list must not move the map.
   }, [selectedId])
 
+  useEffect(() => {
+    if (!route) return
+    const map = mapRef.current
+    // A white casing under the blue line keeps the route readable over any tile colour.
+    const casing = L.polyline(route, { color: '#ffffff', weight: 9, interactive: false })
+    const line = L.polyline(route, {
+      color: '#2f7bf6',
+      weight: 5,
+      interactive: false,
+      className: 'route-line',
+    })
+    const layer = L.layerGroup([casing, line]).addTo(map)
+    // Normalising the path length lets the CSS draw-in animation work at any zoom.
+    line.getElement()?.setAttribute('pathLength', '1')
+    // Extra room on top for the destination pin's label.
+    map.fitBounds(L.latLngBounds(route), { paddingTopLeft: [32, 56], paddingBottomRight: [32, 28] })
+    return () => layer.remove()
+  }, [route])
+
   return (
     <div className="relative isolate h-full w-full">
       <div ref={containerRef} className="h-full w-full" />
-      <button
-        type="button"
-        aria-label="Centre map on my location"
-        onClick={() => mapRef.current?.flyTo([user.lat, user.lng], 15, { duration: 0.6 })}
-        className="absolute bottom-6 right-3 z-[1000] grid size-11 place-items-center rounded-full bg-white text-[#0b2b31] shadow-float transition hover:bg-[#eef5f6] active:scale-95"
-      >
-        <LocateFixed className="size-5" />
-      </button>
+      {/* A route view already frames the user's position, so it needs no recentre button. */}
+      {!route && (
+        <button
+          type="button"
+          aria-label="Centre map on my location"
+          onClick={() => mapRef.current?.flyTo([user.lat, user.lng], 15, { duration: 0.6 })}
+          className="absolute bottom-6 right-3 z-[1000] grid size-11 place-items-center rounded-full bg-white text-[#0b2b31] shadow-float transition hover:bg-[#eef5f6] active:scale-95"
+        >
+          <LocateFixed className="size-5" />
+        </button>
+      )}
     </div>
   )
 }

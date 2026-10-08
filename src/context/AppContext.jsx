@@ -3,8 +3,9 @@ import { DEMO_USER, seedAccounts, seedDeposits, seedNotifications } from '../dat
 import { accountLabel, makeRef, money, uid } from '../utils/format'
 
 // Bump the version when the seeded demo data changes (v2: demo user renamed; v3: app renamed
-// to BankDeposit), so browsers holding the old data start again from the new seed.
-const STORAGE_KEY = 'bankdeposit:v3'
+// to BankDeposit; v4: numeric deposit references; v6: GM-style terminal IDs), so browsers holding
+// the old data start again from the new seed.
+const STORAGE_KEY = 'bankdeposit:v6'
 const DEMO_AMOUNTS = [50, 100, 150]
 
 function freshState() {
