@@ -41,7 +41,7 @@ export default function History() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 animate-page-in flex-col">
+    <div className="flex min-h-0 flex-1 animate-page-in flex-col xl:[--page:64rem]">
       <PageHeader
         title="Transaction History"
         subtitle={`${deposits.length} ${deposits.length === 1 ? 'deposit' : 'deposits'}`}
@@ -76,10 +76,10 @@ export default function History() {
           groups.map((group) => (
             <section key={group.label} className="mb-5">
               <div className="mb-2 flex items-baseline justify-between px-1">
-                <h2 className="text-[13px] font-bold uppercase tracking-wider text-ink-2">
+                <h2 className="text-[0.8125rem] font-bold uppercase tracking-wider text-ink-2">
                   {group.label}
                 </h2>
-                <p className="text-[13px] font-bold tabular-nums text-ink-2">
+                <p className="text-[0.8125rem] font-bold tabular-nums text-ink-2">
                   {money(group.total)} deposited
                 </p>
               </div>

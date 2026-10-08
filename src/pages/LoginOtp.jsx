@@ -37,10 +37,10 @@ export default function LoginOtp() {
         className="no-scrollbar gutter min-h-0 flex-1 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-8 [--page:24rem] md:pt-14"
       >
         <div className="flex flex-col items-center text-center">
-          <span className="grid size-[72px] animate-pop place-items-center rounded-[26px] bg-accent-soft text-accent-soft-ink">
+          <span className="grid size-[4.5rem] animate-pop place-items-center rounded-[1.625rem] bg-accent-soft text-accent-soft-ink">
             <MessageSquareText className="size-8" />
           </span>
-          <h2 className="mt-5 text-[22px] font-extrabold tracking-tight">Verify your number</h2>
+          <h2 className="mt-5 text-[1.375rem] font-extrabold tracking-tight">Verify your number</h2>
           <p className="mt-1.5 max-w-[30ch] text-sm text-ink-2">
             Enter the {OTP_LENGTH}-digit code sent to{' '}
             <b className="font-bold tabular-nums text-ink">{phone}</b>.
@@ -58,7 +58,7 @@ export default function LoginOtp() {
                 <span
                   key={index}
                   className={cx(
-                    'grid h-[60px] place-items-center rounded-2xl border-2 bg-surface text-2xl font-extrabold tabular-nums shadow-soft transition',
+                    'grid h-[3.75rem] place-items-center rounded-2xl border-2 bg-surface text-2xl font-extrabold tabular-nums shadow-soft transition',
                     error
                       ? 'border-danger'
                       : active

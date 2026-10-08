@@ -109,7 +109,7 @@ export default function LoginScan() {
         <IconButton tone="brand" label="Back" onClick={() => (direct ? navigate('/login', { replace: true }) : navigate(-1))}>
           <ChevronLeft />
         </IconButton>
-        <h1 className="text-[22px] font-extrabold tracking-tight">Scan QR code</h1>
+        <h1 className="text-[1.375rem] font-extrabold tracking-tight">Scan QR code</h1>
       </header>
 
       {error ? (
@@ -117,7 +117,7 @@ export default function LoginScan() {
           <span className="grid size-16 place-items-center rounded-3xl bg-white/10">
             <CameraOff className="size-7" />
           </span>
-          <p role="alert" className="mt-4 max-w-[28ch] text-[15px] font-semibold">
+          <p role="alert" className="mt-4 max-w-[28ch] text-[0.9375rem] font-semibold">
             {error}
           </p>
           <Button
@@ -134,7 +134,7 @@ export default function LoginScan() {
       ) : (
         <div className="relative flex flex-1 flex-col items-center justify-center px-8 pb-16">
           {/* The oversized shadow dims everything outside the viewfinder. */}
-          <span className="size-60 rounded-[32px] border-[3px] border-white shadow-[0_0_0_100vmax_rgb(0_0_0/0.5)]" />
+          <span className="size-60 rounded-[2rem] border-[3px] border-white shadow-[0_0_0_100vmax_rgb(0_0_0/0.5)]" />
           <p className="relative mt-6 text-center text-sm font-semibold">
             Point your camera at the QR code.
           </p>

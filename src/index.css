@@ -220,10 +220,28 @@
     --k-walgreens: #5cd3e0;
   }
 
+  /* Sizes across the app are in rem, so large screens scale the whole interface from here.
+     It stays at the browser's own size up to laptop width (1440px), then grows with the window. */
+  html {
+    font-size: clamp(100%, 0.625rem + 0.4167vw, 137.5%);
+  }
+
   html,
   body,
   #root {
     height: 100%;
+  }
+
+  /* Wider side padding once the sidebar layout is in use. */
+  @media (width >= 64rem) {
+    :root {
+      --gutter: 1.5rem;
+    }
+  }
+  @media (width >= 96rem) {
+    :root {
+      --gutter: 2.5rem;
+    }
   }
 
   body {

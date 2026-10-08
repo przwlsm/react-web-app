@@ -74,7 +74,7 @@ export default function LocationMap({ locations, selectedId, onSelect, user }) {
         type="button"
         aria-label="Centre map on my location"
         onClick={() => mapRef.current?.flyTo([user.lat, user.lng], 15, { duration: 0.6 })}
-        className="absolute bottom-6 right-3 z-[1000] grid size-11 place-items-center rounded-full bg-white text-[#0b2b31] shadow-float transition active:scale-95"
+        className="absolute bottom-6 right-3 z-[1000] grid size-11 place-items-center rounded-full bg-white text-[#0b2b31] shadow-float transition hover:bg-[#eef5f6] active:scale-95"
       >
         <LocateFixed className="size-5" />
       </button>

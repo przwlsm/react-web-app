@@ -56,120 +56,123 @@ export default function AddAccount() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 animate-page-in flex-col">
+    <div className="flex min-h-0 flex-1 animate-page-in flex-col xl:[--page:72rem]">
       <PageHeader title="Add New Account" onBack={() => navigate(-1)} />
 
       <form
         onSubmit={submit}
         noValidate
-        className="no-scrollbar gutter min-h-0 flex-1 space-y-5 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5"
+        className="no-scrollbar gutter min-h-0 flex-1 space-y-5 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 xl:grid xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] xl:items-start xl:gap-10 xl:space-y-0"
       >
+        {/* On large screens the card preview stays in view beside the form. */}
         <AccountCard
-          className="md:max-w-sm"
+          className="md:max-w-sm xl:sticky xl:top-0 xl:max-w-none"
           account={{ bankId, bankName, type, last4: number.slice(-4), holder: holder || ' ' }}
         />
 
-        <div>
-          <p className="mb-2 text-[13px] font-bold text-ink-2">Bank</p>
-          <div className="grid grid-cols-3 gap-2 md:grid-cols-5">
-            {BANKS.map((bank) => {
-              const selected = bank.id === bankId
-              return (
-                <button
-                  key={bank.id}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setBankId(bank.id)}
-                  className={cx(
-                    'relative flex flex-col items-center gap-2 rounded-2xl border-2 bg-surface px-2 py-3 text-center transition active:scale-[0.97]',
-                    selected ? 'border-accent' : 'border-transparent shadow-soft',
-                  )}
-                >
-                  <span
-                    style={bankGradient(bank)}
-                    className="grid size-10 place-items-center rounded-xl text-xs font-extrabold text-white"
+        <div className="space-y-5">
+          <div>
+            <p className="mb-2 text-[0.8125rem] font-bold text-ink-2">Bank</p>
+            <div className="grid grid-cols-3 gap-2 md:grid-cols-5">
+              {BANKS.map((bank) => {
+                const selected = bank.id === bankId
+                return (
+                  <button
+                    key={bank.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setBankId(bank.id)}
+                    className={cx(
+                      'relative flex flex-col items-center gap-2 rounded-2xl border-2 bg-surface px-2 py-3 text-center transition active:scale-[0.97]',
+                      selected ? 'border-accent' : 'border-transparent shadow-soft hover:border-ink/15',
+                    )}
                   >
-                    {bank.mark}
-                  </span>
-                  <span className="text-[11.5px] font-bold leading-tight">{bank.name}</span>
-                  {selected && (
-                    <span className="absolute right-1.5 top-1.5 grid size-[18px] place-items-center rounded-full bg-accent text-accent-ink">
-                      <Check className="size-3" strokeWidth={3} />
+                    <span
+                      style={bankGradient(bank)}
+                      className="grid size-10 place-items-center rounded-xl text-xs font-extrabold text-white"
+                    >
+                      {bank.mark}
                     </span>
-                  )}
-                </button>
-              )
-            })}
+                    <span className="text-[0.71875rem] font-bold leading-tight">{bank.name}</span>
+                    {selected && (
+                      <span className="absolute right-1.5 top-1.5 grid size-[1.125rem] place-items-center rounded-full bg-accent text-accent-ink">
+                        <Check className="size-3" strokeWidth={3} />
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
           </div>
+
+          {bankId === 'other' && (
+            <Field label="Bank name" error={errors.bank}>
+              <input
+                value={otherName}
+                onChange={(e) => edit(setOtherName, 'bank')(e.target.value)}
+                placeholder="e.g. Ally Bank"
+                className={inputClass}
+              />
+            </Field>
+          )}
+
+          <div>
+            <p className="mb-2 text-[0.8125rem] font-bold text-ink-2">Account type</p>
+            <Segmented label="Account type" options={ACCOUNT_TYPES} value={type} onChange={setType} />
+          </div>
+
+          {/* One column on phones; two from tablet width up. */}
+          <div className="grid gap-5 md:grid-cols-2">
+            <Field label="Account holder" error={errors.holder}>
+              <input
+                value={holder}
+                onChange={(e) => edit(setHolder, 'holder')(e.target.value)}
+                autoComplete="name"
+                placeholder="Full name"
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Routing number" error={errors.routing} hint="The 9-digit number on your checks.">
+              <input
+                value={routing}
+                onChange={(e) => edit(setRouting, 'routing')(digitsOnly(e.target.value, 9))}
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="000000000"
+                className={cx(inputClass, 'font-mono tracking-widest')}
+              />
+            </Field>
+            <Field label="Account number" error={errors.number}>
+              <input
+                value={number}
+                onChange={(e) => edit(setNumber, 'number', 'confirm')(digitsOnly(e.target.value, 17))}
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="Account number"
+                className={cx(inputClass, 'font-mono tracking-widest')}
+              />
+            </Field>
+            <Field label="Confirm account number" error={errors.confirm}>
+              <input
+                value={confirm}
+                onChange={(e) => edit(setConfirm, 'confirm')(digitsOnly(e.target.value, 17))}
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="Re-enter account number"
+                className={cx(inputClass, 'font-mono tracking-widest')}
+              />
+            </Field>
+          </div>
+
+          <p className="flex items-start gap-2 text-xs text-ink-2">
+            <ShieldCheck className="mt-px size-4 shrink-0 text-success" />
+            Only the last 4 digits are shown in the app. The rest stays masked.
+          </p>
+
+          <Button type="submit" className="md:w-64">
+            Add account
+          </Button>
         </div>
-
-        {bankId === 'other' && (
-          <Field label="Bank name" error={errors.bank}>
-            <input
-              value={otherName}
-              onChange={(e) => edit(setOtherName, 'bank')(e.target.value)}
-              placeholder="e.g. Ally Bank"
-              className={inputClass}
-            />
-          </Field>
-        )}
-
-        <div>
-          <p className="mb-2 text-[13px] font-bold text-ink-2">Account type</p>
-          <Segmented label="Account type" options={ACCOUNT_TYPES} value={type} onChange={setType} />
-        </div>
-
-        {/* One column on phones; two from tablet width up. */}
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Account holder" error={errors.holder}>
-            <input
-              value={holder}
-              onChange={(e) => edit(setHolder, 'holder')(e.target.value)}
-              autoComplete="name"
-              placeholder="Full name"
-              className={inputClass}
-            />
-          </Field>
-          <Field label="Routing number" error={errors.routing} hint="The 9-digit number on your checks.">
-            <input
-              value={routing}
-              onChange={(e) => edit(setRouting, 'routing')(digitsOnly(e.target.value, 9))}
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="000000000"
-              className={cx(inputClass, 'font-mono tracking-widest')}
-            />
-          </Field>
-          <Field label="Account number" error={errors.number}>
-            <input
-              value={number}
-              onChange={(e) => edit(setNumber, 'number', 'confirm')(digitsOnly(e.target.value, 17))}
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="Account number"
-              className={cx(inputClass, 'font-mono tracking-widest')}
-            />
-          </Field>
-          <Field label="Confirm account number" error={errors.confirm}>
-            <input
-              value={confirm}
-              onChange={(e) => edit(setConfirm, 'confirm')(digitsOnly(e.target.value, 17))}
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="Re-enter account number"
-              className={cx(inputClass, 'font-mono tracking-widest')}
-            />
-          </Field>
-        </div>
-
-        <p className="flex items-start gap-2 text-xs text-ink-2">
-          <ShieldCheck className="mt-px size-4 shrink-0 text-success" />
-          Only the last 4 digits are shown in the app. The rest stays masked.
-        </p>
-
-        <Button type="submit" className="md:w-64">
-          Add account
-        </Button>
       </form>
     </div>
   )

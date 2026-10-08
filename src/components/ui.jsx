@@ -2,15 +2,16 @@ import { ChevronLeft, Cross, Pill, Store } from 'lucide-react'
 import { cx, STATUS_LABEL } from '../utils/format'
 
 const BUTTON_VARIANTS = {
-  primary: 'bg-btn-gradient text-btn-fg shadow-btn disabled:shadow-none',
-  accent: 'bg-accent text-accent-ink',
-  ghost: 'bg-surface text-ink shadow-soft',
-  danger: 'bg-danger-bg text-danger',
+  primary:
+    'bg-btn-gradient text-btn-fg shadow-btn not-disabled:hover:brightness-110 disabled:shadow-none',
+  accent: 'bg-accent text-accent-ink hover:brightness-110',
+  ghost: 'bg-surface text-ink shadow-soft hover:bg-surface-2',
+  danger: 'bg-danger-bg text-danger hover:brightness-95',
 }
 
 export const buttonClass = (variant = 'primary') =>
   cx(
-    'flex h-14 w-full shrink-0 items-center justify-center gap-2 rounded-[18px] text-base font-bold transition active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100 [&_svg]:size-5',
+    'flex h-14 w-full shrink-0 items-center justify-center gap-2 rounded-[1.125rem] text-base font-bold transition active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100 [&_svg]:size-5',
     BUTTON_VARIANTS[variant],
   )
 
@@ -19,9 +20,9 @@ export function Button({ variant = 'primary', className, ...props }) {
 }
 
 const ICON_TONES = {
-  surface: 'bg-surface text-ink shadow-soft',
-  plain: 'bg-ink/5 text-ink',
-  brand: 'bg-white/15 text-white',
+  surface: 'bg-surface text-ink shadow-soft hover:bg-surface-2',
+  plain: 'bg-ink/5 text-ink hover:bg-ink/10',
+  brand: 'bg-white/15 text-white hover:bg-white/25',
 }
 
 export function IconButton({ label, small, tone = 'surface', className, children, ...props }) {
@@ -31,7 +32,7 @@ export function IconButton({ label, small, tone = 'surface', className, children
       aria-label={label}
       className={cx(
         'relative grid shrink-0 place-items-center rounded-full transition active:scale-95',
-        small ? 'size-9 [&_svg]:size-[18px]' : 'size-11 [&_svg]:size-5',
+        small ? 'size-9 [&_svg]:size-[1.125rem]' : 'size-11 [&_svg]:size-5',
         ICON_TONES[tone],
         className,
       )}
@@ -45,7 +46,7 @@ export function IconButton({ label, small, tone = 'surface', className, children
 // Teal band across the top of a screen; children (search, progress) sit inside it.
 export function PageHeader({ title, subtitle, onBack, right, children }) {
   return (
-    <header className="gutter relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white [--gutter:1rem]">
+    <header className="gutter relative z-20 shrink-0 rounded-b-[1.75rem] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white max-lg:[--gutter:1rem]">
       <div className="flex min-h-11 items-center gap-3">
         {onBack && (
           <IconButton tone="brand" label="Back" onClick={onBack}>
@@ -53,7 +54,7 @@ export function PageHeader({ title, subtitle, onBack, right, children }) {
           </IconButton>
         )}
         <div className={cx('min-w-0 flex-1', !onBack && 'pl-1')}>
-          <h1 className="truncate text-[22px] font-extrabold tracking-tight">{title}</h1>
+          <h1 className="truncate text-[1.375rem] font-extrabold tracking-tight">{title}</h1>
           {subtitle && <p className="truncate text-xs font-medium text-white/80">{subtitle}</p>}
         </div>
         {right}
@@ -66,7 +67,7 @@ export function PageHeader({ title, subtitle, onBack, right, children }) {
 export function SectionTitle({ children, action }) {
   return (
     <div className="mb-3 flex items-center justify-between">
-      <h2 className="text-[17px] font-extrabold tracking-tight">{children}</h2>
+      <h2 className="text-[1.0625rem] font-extrabold tracking-tight">{children}</h2>
       {action}
     </div>
   )
@@ -82,7 +83,7 @@ export function StatusChip({ status }) {
   return (
     <span
       className={cx(
-        'inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold',
+        'inline-flex items-center rounded-full px-2 py-0.5 text-[0.6875rem] font-bold',
         CHIP_STYLES[status],
       )}
     >
@@ -112,8 +113,8 @@ export function FilterChip({ active, className, ...props }) {
       type="button"
       aria-pressed={active}
       className={cx(
-        'h-9 shrink-0 rounded-full px-4 text-[13px] font-bold transition active:scale-95',
-        active ? 'bg-ink text-bg' : 'bg-surface text-ink-2 shadow-soft',
+        'h-9 shrink-0 rounded-full px-4 text-[0.8125rem] font-bold transition active:scale-95',
+        active ? 'bg-ink text-bg' : 'bg-surface text-ink-2 shadow-soft hover:text-ink',
         className,
       )}
       {...props}
@@ -136,7 +137,9 @@ export function Segmented({ label, options, value, onChange }) {
           onClick={() => onChange(optionValue)}
           className={cx(
             'flex h-10 items-center justify-center gap-1.5 rounded-xl text-sm font-bold transition',
-            value === optionValue ? 'bg-surface text-ink shadow-soft' : 'text-ink-2',
+            value === optionValue
+              ? 'bg-surface text-ink shadow-soft'
+              : 'text-ink-2 hover:text-ink',
           )}
         >
           {Icon && <Icon className="size-4" />}
@@ -156,7 +159,7 @@ export function Toggle({ label, checked, onChange }) {
       aria-label={label}
       onClick={() => onChange(!checked)}
       className={cx(
-        'relative h-8 w-[52px] shrink-0 rounded-full transition-colors',
+        'relative h-8 w-[3.25rem] shrink-0 rounded-full transition-colors',
         checked ? 'bg-accent' : 'bg-surface-2',
       )}
     >
@@ -176,7 +179,7 @@ export const inputClass =
 export function Field({ label, error, hint, children }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[13px] font-bold text-ink-2">{label}</span>
+      <span className="mb-1.5 block text-[0.8125rem] font-bold text-ink-2">{label}</span>
       {children}
       {error ? (
         <span className="mt-1.5 block text-xs font-semibold text-danger">{error}</span>
@@ -193,7 +196,7 @@ export function EmptyState({ Icon, title, children, action }) {
       <span className="grid size-16 place-items-center rounded-3xl bg-surface-2 text-ink-2">
         <Icon className="size-7" />
       </span>
-      <p className="mt-4 text-[17px] font-extrabold tracking-tight">{title}</p>
+      <p className="mt-4 text-[1.0625rem] font-extrabold tracking-tight">{title}</p>
       <p className="mt-1 max-w-[28ch] text-sm text-ink-2">{children}</p>
       {action && <div className="mt-5 w-full">{action}</div>}
     </div>

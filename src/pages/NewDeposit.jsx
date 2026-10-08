@@ -41,7 +41,7 @@ const NEARBY = LOCATIONS.map((location) => ({
 function StepTitle({ title, children }) {
   return (
     <div className="mb-5 mt-5">
-      <h2 className="text-[26px] font-extrabold leading-tight tracking-tight">{title}</h2>
+      <h2 className="text-[1.625rem] font-extrabold leading-tight tracking-tight">{title}</h2>
       <p className="mt-1 text-sm text-ink-2">{children}</p>
     </div>
   )
@@ -84,7 +84,7 @@ function StepAccount({ accounts, accountId, onSelect, onNext }) {
                 onClick={() => onSelect(account.id)}
                 className={cx(
                   'flex w-full items-center gap-3 rounded-3xl border-2 bg-surface p-4 text-left transition active:scale-[0.99]',
-                  selected ? 'border-accent' : 'border-transparent shadow-soft',
+                  selected ? 'border-accent' : 'border-transparent shadow-soft hover:border-ink/15',
                 )}
               >
                 <span
@@ -95,7 +95,7 @@ function StepAccount({ accounts, accountId, onSelect, onNext }) {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-base font-bold">{account.bankName}</span>
-                  <span className="block text-[13px] text-ink-2">
+                  <span className="block text-[0.8125rem] text-ink-2">
                     {account.type} · •••• {account.last4}
                   </span>
                 </span>
@@ -112,7 +112,7 @@ function StepAccount({ accounts, accountId, onSelect, onNext }) {
           })}
           <Link
             to="/accounts/new"
-            className="flex h-14 items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-ink/15 text-sm font-bold text-ink-2"
+            className="flex h-14 items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-ink/15 text-sm font-bold text-ink-2 transition hover:border-ink/30 hover:text-ink"
           >
             <Plus className="size-4" />
             Add another account
@@ -142,7 +142,7 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
   return (
     // Stacked on phones (map on top); from tablet width up the list becomes a left-hand panel.
     <div className="-mt-6 flex min-h-0 flex-1 flex-col md:flex-row-reverse">
-      <div className="relative h-[45%] min-h-[240px] shrink-0 md:h-auto md:min-h-0 md:flex-1">
+      <div className="relative h-[45%] min-h-[15rem] shrink-0 md:h-auto md:min-h-0 md:flex-1">
         <LocationMap
           locations={visible}
           selectedId={locationId}
@@ -151,14 +151,14 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
         />
       </div>
 
-      <div className="relative z-10 -mt-5 flex min-h-0 flex-1 flex-col md:mt-0 md:w-[400px] md:flex-none md:shadow-float">
+      <div className="relative z-10 -mt-5 flex min-h-0 flex-1 flex-col md:mt-0 md:w-[25rem] md:flex-none md:shadow-float">
         <div
           ref={listRef}
-          className="no-scrollbar min-h-0 flex-1 overflow-y-auto rounded-t-[28px] bg-bg px-5 pb-32 pt-5 md:rounded-none md:pt-11"
+          className="no-scrollbar min-h-0 flex-1 overflow-y-auto rounded-t-[1.75rem] bg-bg px-5 pb-32 pt-5 md:rounded-none md:pt-11"
         >
           <div className="mb-3 flex items-baseline justify-between">
-            <h2 className="text-[19px] font-extrabold tracking-tight">Nearby deposit locations</h2>
-            <p className="text-[13px] font-semibold text-ink-2">{visible.length} found</p>
+            <h2 className="text-[1.1875rem] font-extrabold tracking-tight">Nearby deposit locations</h2>
+            <p className="text-[0.8125rem] font-semibold text-ink-2">{visible.length} found</p>
           </div>
           {/* The filters live with the list, not on the map, so they never sit on top of a pin. */}
           <div className="no-scrollbar -mx-5 mb-3 flex gap-2 overflow-x-auto px-5 pb-1">
@@ -180,14 +180,14 @@ function StepLocation({ locationId, onSelect, onGenerate }) {
                   onClick={() => onSelect(location.id)}
                   className={cx(
                     'flex w-full scroll-mt-2 items-center gap-3 rounded-3xl border-2 bg-surface p-3.5 text-left transition active:scale-[0.99]',
-                    selected ? 'border-accent' : 'border-transparent shadow-soft',
+                    selected ? 'border-accent' : 'border-transparent shadow-soft hover:border-ink/15',
                   )}
                 >
                   <KindTile kind={location.kind} />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[15px] font-bold leading-snug">{location.name}</span>
+                    <span className="block text-[0.9375rem] font-bold leading-snug">{location.name}</span>
                     <span className="block truncate text-xs text-ink-2">{location.address}</span>
-                    <span className="mt-1 block truncate text-[11px] font-semibold text-ink-3">
+                    <span className="mt-1 block truncate text-[0.6875rem] font-semibold text-ink-3">
                       {location.hours} · Terminal {location.terminal}
                     </span>
                   </span>
@@ -221,7 +221,7 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
   return (
     <div className="no-scrollbar gutter min-h-0 flex-1 overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 [--page:26rem] md:pt-8">
       {/* Laid out like a ticket: who and where on the stub, the code below the tear line. */}
-      <div className="animate-rise rounded-[28px] bg-surface shadow-float">
+      <div className="animate-rise rounded-[1.75rem] bg-surface shadow-float">
         <div className="flex items-center gap-3 p-4">
           <span
             style={bankGradient(bank)}
@@ -232,12 +232,12 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
           {/* The status sits beside the caption, not the account, so narrow phones keep the full account label. */}
           <span className="min-w-0 flex-1">
             <span className="flex items-center justify-between gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-ink-2">
+              <span className="text-[0.6875rem] font-bold uppercase tracking-wider text-ink-2">
                 Deposit to
               </span>
               <StatusChip status="pending" />
             </span>
-            <span className="mt-0.5 block text-[17px] font-extrabold leading-snug tracking-tight">
+            <span className="mt-0.5 block text-[1.0625rem] font-extrabold leading-snug tracking-tight">
               {deposit.accountLabel}
             </span>
           </span>
@@ -247,7 +247,7 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
           <span className="absolute -right-8 -top-3 size-6 rounded-full bg-bg" />
         </div>
         <div className="px-2 pb-5 pt-4">
-          <p className="mx-auto mb-3 max-w-[36ch] px-2 text-center text-[13px] font-medium leading-snug text-ink-2">
+          <p className="mx-auto mb-3 max-w-[36ch] px-2 text-center text-[0.8125rem] font-medium leading-snug text-ink-2">
             Scan the barcode below. You will pay <b className="font-bold text-ink">$1</b> in fees
             when you deposit at these retailers.
           </p>
@@ -271,7 +271,7 @@ function StepScan({ deposit, account, onDone, onSimulate }) {
         <button
           type="button"
           onClick={onSimulate}
-          className="h-11 w-full text-[13px] font-bold text-link underline-offset-4 active:underline"
+          className="h-11 w-full text-[0.8125rem] font-bold text-link underline-offset-4 hover:underline active:underline"
         >
           Simulate kiosk scan (demo)
         </button>
@@ -291,8 +291,8 @@ function StepSuccess({ deposit, onDone }) {
             <Check className="size-11" strokeWidth={3} />
           </span>
         </span>
-        <h2 className="mt-7 text-[28px] font-extrabold tracking-tight">Deposit complete</h2>
-        <p className="mt-1.5 text-[15px] text-ink-2">
+        <h2 className="mt-7 text-[1.75rem] font-extrabold tracking-tight">Deposit complete</h2>
+        <p className="mt-1.5 text-[0.9375rem] text-ink-2">
           <b className="font-bold tabular-nums text-ink">{money(deposit.amount)}</b> was deposited.
         </p>
 
@@ -304,7 +304,7 @@ function StepSuccess({ deposit, onDone }) {
             ['Reference', deposit.ref],
           ].map(([label, value]) => (
             <div key={label} className="flex items-center justify-between gap-4 py-3">
-              <dt className="shrink-0 text-[13px] font-semibold text-ink-2">{label}</dt>
+              <dt className="shrink-0 text-[0.8125rem] font-semibold text-ink-2">{label}</dt>
               <dd
                 className={cx(
                   'min-w-0 truncate text-sm font-bold',
@@ -350,7 +350,7 @@ export default function NewDeposit() {
 
   return (
     <div className="relative flex min-h-0 flex-1 animate-page-in flex-col">
-      <header className="gutter relative z-20 shrink-0 rounded-b-[28px] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white [--gutter:1rem]">
+      <header className="gutter relative z-20 shrink-0 rounded-b-[1.75rem] bg-brand-gradient pb-4 pt-[calc(0.75rem+env(safe-area-inset-top))] text-white max-lg:[--gutter:1rem]">
         <div className="flex items-center gap-3">
           {created ? (
             <span className="size-11" />
@@ -364,7 +364,7 @@ export default function NewDeposit() {
             </IconButton>
           )}
           <div className="min-w-0 flex-1 text-center">
-            <h1 className="text-[17px] font-extrabold tracking-tight">New Deposit</h1>
+            <h1 className="text-[1.0625rem] font-extrabold tracking-tight">New Deposit</h1>
             <p className="text-xs font-medium text-white/85">
               {created
                 ? done

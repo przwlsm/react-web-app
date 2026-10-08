@@ -9,11 +9,11 @@ export default function DepositRow({ deposit, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition active:bg-surface-2/60"
+      className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-surface-2/40 active:bg-surface-2/60"
     >
       <KindTile kind={locationById(deposit.locationId)?.kind} />
       <span className="min-w-0 flex-1">
-        <span className="block text-[15px] font-bold leading-snug">{deposit.locationName}</span>
+        <span className="block text-[0.9375rem] font-bold leading-snug">{deposit.locationName}</span>
         <span className="mt-0.5 block truncate text-xs text-ink-2">
           Terminal {deposit.terminal} · {deposit.type}
         </span>
@@ -27,7 +27,7 @@ export default function DepositRow({ deposit, onClick }) {
         {deposit.amount != null && (
           <span
             className={cx(
-              'mb-0.5 block text-[15px] font-extrabold tabular-nums',
+              'mb-0.5 block text-[0.9375rem] font-extrabold tabular-nums',
               completed ? 'text-success' : 'text-ink-2',
             )}
           >

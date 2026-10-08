@@ -17,14 +17,14 @@ export default function NotificationsSheet() {
       ) : (
         <>
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-[13px] font-semibold text-ink-2">
+            <p className="text-[0.8125rem] font-semibold text-ink-2">
               {unread > 0 ? `${unread} unread` : 'No unread notifications'}
             </p>
             {unread > 0 && (
               <button
                 type="button"
                 onClick={markAllRead}
-                className="text-[13px] font-bold text-link"
+                className="text-[0.8125rem] font-bold text-link underline-offset-4 hover:underline"
               >
                 Mark all as read
               </button>
@@ -39,15 +39,15 @@ export default function NotificationsSheet() {
                     n.read ? 'bg-surface-2 text-ink-2' : 'bg-accent-soft text-accent-soft-ink',
                   )}
                 >
-                  <Bell className="size-[18px]" />
+                  <Bell className="size-[1.125rem]" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="flex items-center gap-2 text-sm font-bold">
                     <span className="truncate">{n.title}</span>
                     {!n.read && <span className="size-2 shrink-0 rounded-full bg-danger" />}
                   </p>
-                  <p className="mt-0.5 text-[13px] leading-snug text-ink-2">{n.body}</p>
-                  <p className="mt-1.5 text-[11px] font-semibold text-ink-3">
+                  <p className="mt-0.5 text-[0.8125rem] leading-snug text-ink-2">{n.body}</p>
+                  <p className="mt-1.5 text-[0.6875rem] font-semibold text-ink-3">
                     {dayLabel(n.at)} · {timeLabel(n.at)}
                   </p>
                 </div>

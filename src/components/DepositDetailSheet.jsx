@@ -8,7 +8,7 @@ import { Button, StatusChip } from './ui'
 function Row({ label, children }) {
   return (
     <div className="flex items-start justify-between gap-4 py-3">
-      <dt className="shrink-0 text-[13px] font-semibold text-ink-2">{label}</dt>
+      <dt className="shrink-0 text-[0.8125rem] font-semibold text-ink-2">{label}</dt>
       <dd className="min-w-0 text-right text-sm font-bold">{children}</dd>
     </div>
   )
@@ -27,7 +27,7 @@ export default function DepositDetailSheet() {
     <Sheet open onClose={closeDetail} title="Deposit details">
       <div className="flex flex-col items-center pb-2 pt-1 text-center">
         {deposit.amount != null && (
-          <p className="mb-3 text-[44px] font-extrabold leading-none tracking-tight tabular-nums">
+          <p className="mb-3 text-[2.75rem] font-extrabold leading-none tracking-tight tabular-nums">
             {money(deposit.amount)}
           </p>
         )}

@@ -22,7 +22,7 @@ export default function SideMenu() {
         aria-modal="true"
         aria-label="Menu"
         onClick={(e) => e.stopPropagation()}
-        className="flex h-full w-[84%] max-w-[330px] animate-drawer-in flex-col bg-bg px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] shadow-float"
+        className="flex h-full w-[84%] max-w-[20.625rem] animate-drawer-in flex-col bg-bg px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] shadow-float"
       >
         <div className="flex items-center gap-3 rounded-3xl bg-brand-gradient p-4 text-white">
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/20 text-base font-extrabold">
@@ -36,9 +36,9 @@ export default function SideMenu() {
             type="button"
             aria-label="Close menu"
             onClick={closeMenu}
-            className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15 transition active:scale-95"
+            className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15 transition hover:bg-white/25 active:scale-95"
           >
-            <X className="size-[18px]" />
+            <X className="size-[1.125rem]" />
           </button>
         </div>
 
@@ -51,13 +51,15 @@ export default function SideMenu() {
               onClick={closeMenu}
               className={({ isActive }) =>
                 cx(
-                  'flex h-14 items-center gap-3 rounded-2xl px-3 text-[15px] font-bold transition active:bg-surface-2',
-                  isActive ? 'bg-surface text-ink shadow-soft' : 'text-ink-2',
+                  'flex h-14 items-center gap-3 rounded-2xl px-3 text-[0.9375rem] font-bold transition active:bg-surface-2',
+                  isActive
+                    ? 'bg-surface text-ink shadow-soft'
+                    : 'text-ink-2 hover:bg-ink/5 hover:text-ink',
                 )
               }
             >
               <span className="grid size-9 place-items-center rounded-xl bg-ink/5">
-                <Icon className="size-[18px]" />
+                <Icon className="size-[1.125rem]" />
               </span>
               <span className="flex-1">{label}</span>
               <ChevronRight className="size-4 text-ink-3" />
@@ -68,10 +70,10 @@ export default function SideMenu() {
         <button
           type="button"
           onClick={askLogout}
-          className="flex h-14 items-center gap-3 rounded-2xl px-3 text-[15px] font-bold text-danger transition active:bg-danger-bg"
+          className="flex h-14 items-center gap-3 rounded-2xl px-3 text-[0.9375rem] font-bold text-danger transition hover:bg-danger-bg active:bg-danger-bg"
         >
           <span className="grid size-9 place-items-center rounded-xl bg-danger-bg">
-            <LogOut className="size-[18px]" />
+            <LogOut className="size-[1.125rem]" />
           </span>
           Log out
         </button>

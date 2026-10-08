@@ -20,7 +20,7 @@ export function makeRef() {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   const pick = (n) =>
     Array.from({ length: n }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join('')
-  return `QD-${pick(4)}-${pick(4)}`
+  return `BD-${pick(4)}-${pick(4)}`
 }
 
 export const initialsOf = (name) =>

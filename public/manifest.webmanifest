@@ -1,6 +1,6 @@
 {
-  "name": "QuickDeposit",
-  "short_name": "QuickDeposit",
+  "name": "BankDeposit",
+  "short_name": "BankDeposit",
   "description": "Deposit cash to your bank account at a kiosk near you.",
   "start_url": "/",
   "display": "standalone",

@@ -39,10 +39,10 @@ export default function Login() {
           </span>
           BankDeposit
         </div>
-        <h1 className="relative mt-6 text-[34px] font-extrabold leading-[1.1] tracking-tight md:text-5xl md:leading-[1.15] lg:text-6xl lg:leading-[1.15]">
+        <h1 className="relative mt-6 text-[2.125rem] font-extrabold leading-[1.1] tracking-tight md:text-5xl md:leading-[1.15] lg:text-6xl lg:leading-[1.15]">
           Deposit cash at a store near you.
         </h1>
-        <p className="relative mt-3 max-w-[30ch] text-[15px] text-white/90 md:mt-5 md:text-lg">
+        <p className="relative mt-3 max-w-[30ch] text-[0.9375rem] text-white/90 md:mt-5 md:text-lg">
           Pick an account, choose a location, and scan your code at the kiosk.
         </p>
       </div>
@@ -50,7 +50,7 @@ export default function Login() {
       <form
         onSubmit={submit}
         noValidate
-        className="no-scrollbar animate-sheet-up space-y-4 rounded-t-[32px] bg-bg px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-7 text-ink md:flex md:w-[440px] md:shrink-0 md:animate-fade-in md:flex-col md:justify-center-safe md:overflow-y-auto md:rounded-l-[40px] md:rounded-tr-none md:px-10 md:py-10"
+        className="no-scrollbar animate-sheet-up space-y-4 rounded-t-[2rem] bg-bg px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-7 text-ink md:flex md:w-[27.5rem] md:shrink-0 md:animate-fade-in md:flex-col md:justify-center-safe md:overflow-y-auto md:rounded-l-[2.5rem] md:rounded-tr-none md:px-10 md:py-10"
       >
         <h2 className="text-2xl font-extrabold tracking-tight">Log in</h2>
         <Field label="Phone number" error={error}>

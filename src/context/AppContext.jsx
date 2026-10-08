@@ -2,9 +2,9 @@ import { createContext, useCallback, useContext, useEffect, useReducer, useState
 import { DEMO_USER, seedAccounts, seedDeposits, seedNotifications } from '../data/seed'
 import { accountLabel, makeRef, money, uid } from '../utils/format'
 
-// Bump the version when the seeded demo data changes (v2: demo user renamed), so browsers
-// holding the old data start again from the new seed.
-const STORAGE_KEY = 'quickdeposit:v2'
+// Bump the version when the seeded demo data changes (v2: demo user renamed; v3: app renamed
+// to BankDeposit), so browsers holding the old data start again from the new seed.
+const STORAGE_KEY = 'bankdeposit:v3'
 const DEMO_AMOUNTS = [50, 100, 150]
 
 function freshState() {

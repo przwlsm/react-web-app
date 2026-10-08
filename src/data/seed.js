@@ -76,7 +76,7 @@ export function seedNotifications() {
     },
     {
       id: uid('ntf'),
-      title: 'Welcome to QuickDeposit',
+      title: 'Welcome to BankDeposit',
       body: 'Add a bank account, pick a location and scan your code at any kiosk.',
       at: now - 41 * DAY,
       read: true,
